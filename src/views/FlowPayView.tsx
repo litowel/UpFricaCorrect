@@ -14,7 +14,7 @@ export function FlowPayView({ user }: FlowPayViewProps) {
           <CreditCard className="text-indigo-400" size={32} />
           Upfrica FlowPay
         </h1>
-        <p className="text-slate-400 mt-1">Accept fiat payments via Paystack and automatically settle into USDC wallets via Circle. Secured by Safe. Powered by Oskayi Consult Ltd, Ghana.</p>
+        <p className="text-slate-400 mt-1">Accept fiat payments via Paystack and automatically settle into USDC wallets via Circle. Secured by Safe. Powered by Oskayio Consults.</p>
       </div>
 
       {user?.kycStatus !== 'verified' && (

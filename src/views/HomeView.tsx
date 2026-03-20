@@ -56,7 +56,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       bgColor: 'bg-indigo-500/10',
       borderColor: 'border-indigo-500/20',
       description: 'AI-powered no-code SaaS builder. Go from prompt to deployed application in seconds. Auto-creates GitHub repos and deploys to Netlify.',
-      features: ['Prompt-to-App', 'GitHub Auto-sync', '1-Click Netlify Deploy']
+      features: ['Prompt-to-app generation', 'Code preview', 'GitHub integration', 'Netlify deploy']
     },
     {
       id: 'lendx',
@@ -75,11 +75,17 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/20">
-              U
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/20">
+                U
+              </div>
+              <span className="text-xl font-bold tracking-tight text-white">UpFrica</span>
             </div>
-            <span className="text-xl font-bold tracking-tight text-white">UpFrica</span>
+            <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+              <button onClick={() => onNavigate('home')} className="text-white">Home</button>
+              <button onClick={() => onNavigate('products')} className="hover:text-white transition-colors">Products</button>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <button 
@@ -108,12 +114,12 @@ export function HomeView({ onNavigate }: HomeViewProps) {
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-indigo-300 mb-8">
             <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-            A product of Oskayi Consult Ltd, Ghana
+            Oskayio Consults
           </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-8 leading-[1.1]">
-            The Financial Engine <br className="hidden md:block" />
+            The Financial Operating System <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">
-              for Modern Africa
+              for Africa and Global Economy
             </span>
           </h1>
           <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -202,12 +208,11 @@ export function HomeView({ onNavigate }: HomeViewProps) {
 
                   <button 
                     onClick={() => {
-                      localStorage.setItem("selectedProduct", product.id);
-                      onNavigate('auth');
+                      onNavigate(`product-${product.id}` as ViewState);
                     }}
                     className={`flex items-center gap-2 text-sm font-medium ${product.color} group-hover:gap-3 transition-all`}
                   >
-                    Get started with {product.name} <ChevronRight size={16} />
+                    Learn more about {product.name} <ChevronRight size={16} />
                   </button>
                 </div>
               </div>

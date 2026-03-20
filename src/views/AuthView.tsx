@@ -270,7 +270,7 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
           <div className="p-4 text-center border-t border-slate-800/50 bg-slate-900/50">
             <p className="text-xs text-slate-500">
               Protected by industry-standard encryption. <br/>
-              Powered by Oskayi Consult Ltd, Ghana.
+              Powered by Oskayio Consults.
             </p>
           </div>
         </div>

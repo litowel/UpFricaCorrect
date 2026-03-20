@@ -18,6 +18,8 @@ import { KYCView } from './views/KYCView';
 import { LendXView } from './views/LendXView';
 import { PaymentsView } from './views/PaymentsView';
 import { SettingsView } from './views/SettingsView';
+import { PublicProductView } from './views/PublicProductView';
+import { ProductsView } from './views/ProductsView';
 
 export default function App() {
   const { user, setUser, currentView, navigate, login, logout, isLoading } = useAppStore();
@@ -38,6 +40,12 @@ export default function App() {
   if (!user) {
     if (currentView === 'auth') {
       return <AuthView onLogin={login} onNavigate={navigate} />;
+    }
+    if (currentView === 'products') {
+      return <ProductsView onNavigate={navigate} />;
+    }
+    if (currentView.startsWith('product-')) {
+      return <PublicProductView productId={currentView} onNavigate={navigate} />;
     }
     return <HomeView onNavigate={navigate} />;
   }

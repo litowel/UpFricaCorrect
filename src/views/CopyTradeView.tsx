@@ -31,7 +31,7 @@ export function CopyTradeView({ user }: CopyTradeViewProps) {
           <TrendingUp className="text-indigo-400" size={32} />
           Upfrica CopyTrade
         </h1>
-        <p className="text-slate-400 mt-1">Automatically copy top-performing crypto traders via Pionex integration. Powered by Oskayi Consult Ltd, Ghana.</p>
+        <p className="text-slate-400 mt-1">Automatically copy top-performing crypto traders via Pionex integration. Powered by Oskayio Consults.</p>
       </div>
 
       <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-6 flex items-start gap-4">

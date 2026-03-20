@@ -20,7 +20,7 @@ export function MarketsView({ user }: MarketsViewProps) {
           <Landmark className="text-indigo-400" size={32} />
           Upfrica Markets
         </h1>
-        <p className="text-slate-400 mt-1">Tokenize and trade real-world assets (RWA). Powered by thirdweb, Escrow.com, and OpenSea. A product of Oskayi Consult Ltd, Ghana.</p>
+        <p className="text-slate-400 mt-1">Tokenize and trade real-world assets (RWA). Powered by thirdweb, Escrow.com, and OpenSea. A product of Oskayio Consults.</p>
       </div>
 
       {user?.kycStatus !== 'verified' && (
