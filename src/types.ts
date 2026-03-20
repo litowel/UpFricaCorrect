@@ -1,0 +1,20 @@
+export type User = {
+  id: string;
+  email: string;
+  name: string;
+  kycStatus: 'pending' | 'verified' | 'rejected' | 'unverified';
+  walletBalance: number;
+  usdcBalance: number;
+  selectedProduct?: ViewState;
+};
+
+export type Transaction = {
+  id: string;
+  amount: number;
+  currency: string;
+  status: 'success' | 'pending' | 'failed';
+  date: string;
+  description: string;
+};
+
+export type ViewState = 'home' | 'auth' | 'dashboard' | 'flowpay' | 'creatorx' | 'copytrade' | 'markets' | 'forge' | 'kyc';

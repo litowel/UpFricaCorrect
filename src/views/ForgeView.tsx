@@ -1,0 +1,403 @@
+import React, { useState } from 'react';
+import { User } from '../types';
+import { Terminal, Code2, Github, Globe, Settings, FolderTree, Play, Download, Copy, Check, LayoutDashboard, Database, FileCode2, Sparkles, Box } from 'lucide-react';
+
+interface ForgeViewProps {
+  user: User | null;
+}
+
+type Tab = 'dashboard' | 'builder' | 'projects' | 'deployments' | 'settings';
+
+export function ForgeView({ user }: ForgeViewProps) {
+  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [prompt, setPrompt] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
+  const [files, setFiles] = useState<{ name: string; content: string; type: 'file' | 'folder' }[]>([]);
+  const [activeFile, setActiveFile] = useState<string | null>(null);
+
+  const [apiKeys, setApiKeys] = useState({
+    cursor: process.env.CURSOR_API_KEY || '',
+    paystack: process.env.PAYSTACK_SECRET_KEY || '',
+    github: process.env.GITHUB_TOKEN || '',
+    netlify: process.env.NETLIFY_TOKEN || ''
+  });
+
+  const handleGenerate = () => {
+    if (!prompt) return;
+    setIsGenerating(true);
+    
+    // Simulate API call to backend -> Cursor API
+    setTimeout(() => {
+      const generatedFiles = [
+        { name: 'src', type: 'folder' as const, content: '' },
+        { name: 'src/app', type: 'folder' as const, content: '' },
+        { name: 'src/app/page.tsx', type: 'file' as const, content: `import { Button } from "@/components/ui/button";\n\nexport default function Home() {\n  return (\n    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-slate-950 text-white">\n      <h1 className="text-4xl font-bold mb-4">Generated App</h1>\n      <p className="text-slate-400 mb-8">Built with Upfrica Forge</p>\n      <Button>Get Started</Button>\n    </main>\n  );\n}` },
+        { name: 'src/app/layout.tsx', type: 'file' as const, content: `import "./globals.css";\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  );\n}` },
+        { name: 'package.json', type: 'file' as const, content: `{\n  "name": "upfrica-forge-app",\n  "version": "0.1.0",\n  "private": true,\n  "scripts": {\n    "dev": "next dev",\n    "build": "next build",\n    "start": "next start"\n  },\n  "dependencies": {\n    "next": "14.0.0",\n    "react": "^18",\n    "react-dom": "^18",\n    "tailwindcss": "^3.3.0"\n  }\n}` },
+      ];
+      setFiles(generatedFiles);
+      setActiveFile('src/app/page.tsx');
+      setIsGenerating(false);
+    }, 3000);
+  };
+
+  const handleCopy = (content: string) => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const setTemplate = (type: 'flowpay' | 'shopai') => {
+    if (type === 'flowpay') {
+      setPrompt('Build a payment dashboard UI like FlowPay. Include a Paystack integration placeholder, a transaction table, and a fiat-to-crypto settlement toggle. Use Tailwind CSS and Next.js App Router.');
+    } else {
+      setPrompt('Build an e-commerce store generator called ShopAI. Include a product listing page, shopping cart, and "Buy on Amazon" affiliate buttons. Use Tailwind CSS and Next.js App Router.');
+    }
+  };
+
+  return (
+    <div className="space-y-6 h-[calc(100vh-8rem)] flex flex-col">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-100 tracking-tight flex items-center gap-3">
+          <Terminal className="text-indigo-400" size={32} />
+          Upfrica Forge
+        </h1>
+        <p className="text-slate-400 mt-1">AI-powered no-code SaaS builder. Generate, deploy, and scale. A product of Oskayi Consult Ltd.</p>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="flex space-x-1 bg-slate-900/50 p-1 rounded-xl border border-slate-800 shrink-0">
+        {[
+          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+          { id: 'builder', label: 'AI Builder', icon: Sparkles },
+          { id: 'projects', label: 'Projects', icon: Box },
+          { id: 'deployments', label: 'Deployments', icon: Globe },
+          { id: 'settings', label: 'Settings', icon: Settings },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as Tab)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeTab === tab.id
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            }`}
+          >
+            <tab.icon size={16} />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className="flex-1 overflow-hidden flex flex-col">
+        {activeTab === 'dashboard' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto pb-6">
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <div className="flex items-center gap-3 text-slate-400 mb-4">
+                <Box size={20} className="text-indigo-400" />
+                <span className="font-medium">Total Projects</span>
+              </div>
+              <div className="text-4xl font-bold text-slate-100">3</div>
+              <div className="mt-4 text-sm text-slate-500">2 deployed to Netlify</div>
+            </div>
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <div className="flex items-center gap-3 text-slate-400 mb-4">
+                <Sparkles size={20} className="text-emerald-400" />
+                <span className="font-medium">AI Generations</span>
+              </div>
+              <div className="text-4xl font-bold text-slate-100">12</div>
+              <div className="mt-4 text-sm text-slate-500">88 generations remaining this month</div>
+            </div>
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <div className="flex items-center gap-3 text-slate-400 mb-4">
+                <Globe size={20} className="text-blue-400" />
+                <span className="font-medium">Active Deployments</span>
+              </div>
+              <div className="text-4xl font-bold text-slate-100">2</div>
+              <div className="mt-4 text-sm text-slate-500">All systems operational</div>
+            </div>
+
+            <div className="md:col-span-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl p-6 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-indigo-400">Upgrade to Forge Pro</h3>
+                <p className="text-indigo-200/70 mt-1">Get unlimited AI generations, custom domains, and priority GitHub sync.</p>
+              </div>
+              <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors">
+                Upgrade Plan
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'builder' && (
+          <div className="flex flex-col h-full gap-4">
+            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-4 shrink-0">
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-medium text-slate-300">Describe what you want to build</label>
+                <div className="flex gap-2">
+                  <button onClick={() => setTemplate('flowpay')} className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition-colors border border-slate-700">
+                    Template: FlowPay
+                  </button>
+                  <button onClick={() => setTemplate('shopai')} className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition-colors border border-slate-700">
+                    Template: ShopAI
+                  </button>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <textarea
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  placeholder="e.g., Build a SaaS dashboard with a sidebar, user profile, and a data table..."
+                  className="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none resize-none h-24"
+                />
+                <button
+                  onClick={handleGenerate}
+                  disabled={isGenerating || !prompt}
+                  className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-800 disabled:text-slate-500 text-white px-6 rounded-xl font-medium transition-colors flex flex-col items-center justify-center gap-2 min-w-[120px]"
+                >
+                  {isGenerating ? (
+                    <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Generating...</>
+                  ) : (
+                    <><Play size={20} /> Generate</>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 flex gap-4 min-h-0">
+              {/* File Explorer */}
+              <div className="w-64 bg-slate-900 rounded-2xl border border-slate-800 flex flex-col overflow-hidden shrink-0">
+                <div className="p-3 border-b border-slate-800 flex items-center gap-2 text-slate-400 text-sm font-medium bg-slate-900/50">
+                  <FolderTree size={16} />
+                  Project Files
+                </div>
+                <div className="flex-1 overflow-y-auto p-2">
+                  {files.length === 0 ? (
+                    <div className="text-slate-600 text-sm text-center mt-10">No files generated yet</div>
+                  ) : (
+                    <div className="space-y-1">
+                      {files.map((file, i) => (
+                        <button
+                          key={i}
+                          onClick={() => file.type === 'file' && setActiveFile(file.name)}
+                          className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors text-left ${
+                            activeFile === file.name ? 'bg-indigo-500/10 text-indigo-400' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                          }`}
+                        >
+                          {file.type === 'folder' ? <FolderTree size={14} /> : <FileCode2 size={14} />}
+                          {file.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Code Editor */}
+              <div className="flex-1 bg-[#0d1117] rounded-2xl border border-slate-800 flex flex-col overflow-hidden">
+                <div className="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                  <div className="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <Code2 size={16} />
+                    {activeFile || 'No file selected'}
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => activeFile && handleCopy(files.find(f => f.name === activeFile)?.content || '')}
+                      disabled={!activeFile}
+                      className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors disabled:opacity-50"
+                      title="Copy Code"
+                    >
+                      {copied ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
+                    </button>
+                    <button 
+                      disabled={files.length === 0}
+                      className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors disabled:opacity-50"
+                      title="Download ZIP"
+                    >
+                      <Download size={16} />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex-1 overflow-auto p-4">
+                  {activeFile ? (
+                    <pre className="text-sm font-mono text-slate-300">
+                      <code>{files.find(f => f.name === activeFile)?.content}</code>
+                    </pre>
+                  ) : (
+                    <div className="h-full flex items-center justify-center text-slate-600 text-sm">
+                      Select a file to view code
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'deployments' && (
+          <div className="max-w-3xl space-y-6 overflow-y-auto pb-6">
+            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center">
+                  <Github size={24} className="text-slate-200" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-100">GitHub Integration</h2>
+                  <p className="text-sm text-slate-400">Auto-create repositories and push generated code.</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-slate-950 rounded-xl border border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                  <span className="text-slate-300 font-medium">Connected as @oskayi-admin</span>
+                </div>
+                <button className="text-sm text-slate-400 hover:text-slate-200">Disconnect</button>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center">
+                  <Globe size={24} className="text-teal-400" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-100">Netlify Deployment</h2>
+                  <p className="text-sm text-slate-400">Deploy your generated GitHub repos automatically.</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between">
+                  <div>
+                    <div className="font-medium text-slate-200">upfrica-forge-app</div>
+                    <a href="#" className="text-sm text-teal-400 hover:underline">https://upfrica-forge-app.netlify.app</a>
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-medium rounded-full border border-emerald-500/20">
+                    Published
+                  </span>
+                </div>
+                
+                <button className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
+                  <Globe size={18} /> Deploy Current Project
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="max-w-2xl space-y-6 overflow-y-auto pb-6">
+            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6">
+              <h2 className="text-lg font-bold text-slate-100 mb-6 flex items-center gap-2">
+                <Settings size={20} className="text-indigo-400" /> API Configuration
+              </h2>
+              
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">CURSOR_API_KEY</label>
+                  <input
+                    type="password"
+                    value={apiKeys.cursor}
+                    onChange={(e) => setApiKeys({...apiKeys, cursor: e.target.value})}
+                    placeholder="sk-..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Required for AI code generation.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">PAYSTACK_SECRET_KEY</label>
+                  <input
+                    type="password"
+                    value={apiKeys.paystack}
+                    onChange={(e) => setApiKeys({...apiKeys, paystack: e.target.value})}
+                    placeholder="sk_live_..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Required for FlowPay templates.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">GITHUB_TOKEN</label>
+                  <input
+                    type="password"
+                    value={apiKeys.github}
+                    onChange={(e) => setApiKeys({...apiKeys, github: e.target.value})}
+                    placeholder="ghp_..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">NETLIFY_TOKEN</label>
+                  <input
+                    type="password"
+                    value={apiKeys.netlify}
+                    onChange={(e) => setApiKeys({...apiKeys, netlify: e.target.value})}
+                    placeholder="nfp_..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+
+                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors mt-4">
+                  Save Configuration
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'projects' && (
+          <div className="overflow-y-auto pb-6">
+            <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-slate-800 text-sm text-slate-400 bg-slate-900/50">
+                    <th className="p-4 font-medium">Project Name</th>
+                    <th className="p-4 font-medium">Template</th>
+                    <th className="p-4 font-medium">Status</th>
+                    <th className="p-4 font-medium">Last Updated</th>
+                    <th className="p-4 font-medium text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {[
+                    { name: 'upfrica-flowpay-demo', template: 'FlowPay', status: 'Deployed', date: '2 hours ago' },
+                    { name: 'shopai-store-1', template: 'ShopAI', status: 'Draft', date: '1 day ago' },
+                    { name: 'custom-saas-app', template: 'Custom', status: 'Deployed', date: '3 days ago' },
+                  ].map((proj, i) => (
+                    <tr key={i} className="hover:bg-slate-800/30 transition-colors">
+                      <td className="p-4">
+                        <div className="font-medium text-slate-200 flex items-center gap-2">
+                          <Database size={16} className="text-indigo-400" />
+                          {proj.name}
+                        </div>
+                      </td>
+                      <td className="p-4 text-slate-400 text-sm">{proj.template}</td>
+                      <td className="p-4">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${
+                          proj.status === 'Deployed' 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                            : 'bg-slate-800 text-slate-300 border-slate-700'
+                        }`}>
+                          {proj.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-slate-400 text-sm">{proj.date}</td>
+                      <td className="p-4 text-right">
+                        <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">Open Builder</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
