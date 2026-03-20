@@ -6,6 +6,7 @@ export type User = {
   walletBalance: number;
   usdcBalance: number;
   selectedProduct?: ViewState;
+  twoFactorEnabled?: boolean;
 };
 
 export type Transaction = {
@@ -17,4 +18,4 @@ export type Transaction = {
   description: string;
 };
 
-export type ViewState = 'home' | 'auth' | 'dashboard' | 'flowpay' | 'creatorx' | 'copytrade' | 'markets' | 'forge' | 'kyc';
+export type ViewState = 'home' | 'auth' | 'dashboard' | 'flowpay' | 'creatorx' | 'copytrade' | 'markets' | 'forge' | 'kyc' | 'lendx' | 'payments' | 'settings';

@@ -15,6 +15,9 @@ import { CopyTradeView } from './views/CopyTradeView';
 import { MarketsView } from './views/MarketsView';
 import { ForgeView } from './views/ForgeView';
 import { KYCView } from './views/KYCView';
+import { LendXView } from './views/LendXView';
+import { PaymentsView } from './views/PaymentsView';
+import { SettingsView } from './views/SettingsView';
 
 export default function App() {
   const { user, setUser, currentView, navigate, login, logout, isLoading } = useAppStore();
@@ -53,6 +56,12 @@ export default function App() {
         return <MarketsView user={user} />;
       case 'forge':
         return <ForgeView user={user} />;
+      case 'lendx':
+        return <LendXView user={user} />;
+      case 'payments':
+        return <PaymentsView user={user} />;
+      case 'settings':
+        return <SettingsView user={user} />;
       case 'kyc':
         return <KYCView user={user} setUser={setUser} />;
       default:

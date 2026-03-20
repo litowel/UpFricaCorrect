@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, ViewState } from '../types';
 import { motion } from 'motion/react';
-import { ShieldCheck, CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Lock, Mail, KeyRound, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Lock, Mail, KeyRound, CheckCircle2, Coins } from 'lucide-react';
 
 interface AuthViewProps {
   onLogin: (user: User, token?: string) => void;
@@ -24,7 +24,17 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
     { id: 'copytrade', name: 'CopyTrade', icon: TrendingUp, desc: 'Crypto copy trading' },
     { id: 'markets', name: 'Markets', icon: Landmark, desc: 'RWA tokenization' },
     { id: 'forge', name: 'Forge', icon: Terminal, desc: 'AI SaaS Builder' },
+    { id: 'lendx', name: 'LendX', icon: Coins, desc: 'DeFi Loans & Liquidity' },
   ];
+
+  useEffect(() => {
+    const storedProduct = localStorage.getItem('selectedProduct');
+    if (storedProduct) {
+      setSelectedProduct(storedProduct as ViewState);
+      setMode('signup');
+      localStorage.removeItem('selectedProduct'); // Clear it after reading
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

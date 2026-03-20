@@ -1,6 +1,6 @@
 import React from 'react';
 import { ViewState } from '../types';
-import { CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Shield, Globe2, Zap, ChevronRight } from 'lucide-react';
+import { CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Shield, Globe2, Zap, ChevronRight, Coins } from 'lucide-react';
 
 interface HomeViewProps {
   onNavigate: (view: ViewState) => void;
@@ -57,6 +57,16 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       borderColor: 'border-indigo-500/20',
       description: 'AI-powered no-code SaaS builder. Go from prompt to deployed application in seconds. Auto-creates GitHub repos and deploys to Netlify.',
       features: ['Prompt-to-App', 'GitHub Auto-sync', '1-Click Netlify Deploy']
+    },
+    {
+      id: 'lendx',
+      name: 'LendX',
+      icon: Coins,
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-cyan-500/20',
+      description: 'Instant crypto loans and DeFi liquidity. Borrow against your assets, access flash loans, and optimize yield strategies using Aave.',
+      features: ['Overcollateralized Loans', 'Flash Loan Access', 'DeFi Yield Optimization']
     }
   ];
 
@@ -169,7 +179,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             {products.map((product, index) => (
               <div 
                 key={product.id}
-                className={`group relative p-8 rounded-3xl border bg-slate-900/40 hover:bg-slate-900/80 transition-all duration-300 ${product.borderColor} ${index === products.length - 1 ? 'lg:col-span-2 lg:w-2/3 lg:mx-auto' : ''}`}
+                className={`group relative p-8 rounded-3xl border bg-slate-900/40 hover:bg-slate-900/80 transition-all duration-300 ${product.borderColor}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent rounded-3xl pointer-events-none" />
                 <div className="relative z-10">
@@ -191,7 +201,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                   </div>
 
                   <button 
-                    onClick={() => onNavigate('auth')}
+                    onClick={() => {
+                      localStorage.setItem("selectedProduct", product.id);
+                      onNavigate('auth');
+                    }}
                     className={`flex items-center gap-2 text-sm font-medium ${product.color} group-hover:gap-3 transition-all`}
                   >
                     Get started with {product.name} <ChevronRight size={16} />
