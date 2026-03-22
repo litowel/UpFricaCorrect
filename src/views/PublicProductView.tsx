@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, CheckCircle2, Shield, Zap, Globe2, TrendingUp, DollarSign, Layers, Code, Cpu, Server, Lock, Activity, CreditCard, Landmark, Paintbrush, Users, Box, Database, GitBranch, Cloud, ChevronDown, Terminal, Coins } from 'lucide-react';
 import { ViewState } from '../types';
+import { Navbar } from '../components/Navbar';
+import { HeroSlider } from '../components/HeroSlider';
 
 interface PublicProductViewProps {
   productId: string;
@@ -49,6 +51,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'Is my money safe?', a: 'Yes, all funds are secured by institutional-grade custody solutions.' },
         { q: 'Which countries are supported?', a: 'We support payouts in over 50 countries globally.' },
         { q: 'Do I need a crypto wallet?', a: 'No, we handle all the crypto complexity behind the scenes.' }
+      ],
+      slides: [
+        {
+          id: 'flowpay-1',
+          title: 'Global Payments, Local Feel',
+          subtitle: 'FlowPay',
+          description: 'Accept payments globally and settle instantly in USDC. Built for modern African businesses.',
+          image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=2071',
+          ctaText: 'Get Started',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'flowpay-2',
+          title: 'Instant Settlement',
+          subtitle: 'Speed',
+          description: 'Funds arrive in seconds, not days. Bypass traditional banking delays.',
+          image: 'https://images.unsplash.com/photo-1580519542036-ed47c0ce31d7?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Learn More',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'flowpay-3',
+          title: 'Paystack Integration',
+          subtitle: 'Seamless',
+          description: 'Connect your existing Paystack account and start accepting global payments instantly.',
+          image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Connect Now',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'flowpay-4',
+          title: 'Multi-currency Support',
+          subtitle: 'Global',
+          description: 'Support for major fiat and cryptocurrencies. Let your customers pay how they want.',
+          image: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&q=80&w=2069',
+          ctaText: 'View Currencies',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'flowpay-5',
+          title: 'Enterprise Security',
+          subtitle: 'Secure',
+          description: 'Bank-grade encryption and compliance. Your funds are always safe.',
+          image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Read Security Docs',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'flowpay-6',
+          title: 'Developer Friendly API',
+          subtitle: 'Build',
+          description: 'Integrate FlowPay into your own app with our comprehensive documentation and SDKs.',
+          image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'View API Docs',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     },
     'product-creatorx': {
@@ -89,6 +147,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'How do fans buy my token?', a: 'Fans can purchase using credit cards or existing crypto wallets.' },
         { q: 'What are the fees?', a: 'We charge a small 2.5% platform fee on primary sales.' },
         { q: 'Can I migrate my existing community?', a: 'Yes, we offer tools to airdrop tokens to your existing subscribers.' }
+      ],
+      slides: [
+        {
+          id: 'creatorx-1',
+          title: 'Monetize Without Borders',
+          subtitle: 'CreatorX',
+          description: 'Launch your own tokens, NFTs, and subscription models. Take back control of your revenue.',
+          image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Creating',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'creatorx-2',
+          title: 'Creator Tokens',
+          subtitle: 'Economy',
+          description: 'Launch your own personal economy and let your fans invest in your success.',
+          image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=2064',
+          ctaText: 'Launch Token',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'creatorx-3',
+          title: 'NFT Memberships',
+          subtitle: 'Exclusive',
+          description: 'Offer exclusive access to your top fans with verifiable digital memberships.',
+          image: 'https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&q=80&w=2097',
+          ctaText: 'Create NFTs',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'creatorx-4',
+          title: 'Direct Revenue',
+          subtitle: '100% Yours',
+          description: 'Keep 100% of your earnings minus network fees. No more 50% platform cuts.',
+          image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'View Pricing',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'creatorx-5',
+          title: 'Token-Gated Content',
+          subtitle: 'Premium',
+          description: 'Restrict access to articles, videos, and communities to your token holders.',
+          image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=2074',
+          ctaText: 'Setup Gates',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'creatorx-6',
+          title: 'Custom Storefronts',
+          subtitle: 'Brand',
+          description: 'Build your brand your way with fully customizable storefronts and landing pages.',
+          image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2015',
+          ctaText: 'Design Store',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     },
     'product-copytrade': {
@@ -129,6 +243,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'How do traders get paid?', a: 'Traders earn a small percentage (usually 10%) of the profits they generate for you.' },
         { q: 'Do I need to transfer my funds to you?', a: 'No, your funds stay securely on your connected exchange.' },
         { q: 'What happens if a trader loses money?', a: 'You will also incur losses. Always use the built-in risk management tools.' }
+      ],
+      slides: [
+        {
+          id: 'copytrade-1',
+          title: 'Automated Crypto Trading',
+          subtitle: 'CopyTrade',
+          description: 'Follow top-performing traders, mirror their strategies in real-time, and manage your portfolio risk effortlessly.',
+          image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Copying',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'copytrade-2',
+          title: 'Top Trader Leaderboard',
+          subtitle: 'Discover',
+          description: 'Find the best traders based on ROI, risk score, and consistency. Transparent stats for everyone.',
+          image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'View Leaderboard',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'copytrade-3',
+          title: 'Real-time Execution',
+          subtitle: 'Speed',
+          description: 'Trades are copied in milliseconds. Never miss a market movement again.',
+          image: 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'See Performance',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'copytrade-4',
+          title: 'Advanced Risk Management',
+          subtitle: 'Protect',
+          description: 'Set your own stop-loss and take-profit limits. You are always in control of your capital.',
+          image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Set Limits',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'copytrade-5',
+          title: 'Secure API Integration',
+          subtitle: 'Security',
+          description: 'Connects directly to your favorite exchanges. Your funds never leave your account.',
+          image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Connect Exchange',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'copytrade-6',
+          title: 'Performance Analytics',
+          subtitle: 'Track',
+          description: 'Track your ROI in real-time with beautiful, easy-to-understand charts and dashboards.',
+          image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2015',
+          ctaText: 'View Dashboard',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     },
     'product-markets': {
@@ -169,6 +339,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'Is KYC required?', a: 'Yes, strict KYC/AML is required to comply with global regulations.' },
         { q: 'What RWAs are available?', a: 'We currently offer tokenized US Treasuries, real estate funds, and gold.' },
         { q: 'How is custody handled?', a: 'We partner with regulated, insured institutional custodians.' }
+      ],
+      slides: [
+        {
+          id: 'markets-1',
+          title: 'Tokenized Real World Assets',
+          subtitle: 'Markets',
+          description: 'Invest in fractionalized real estate, commodities, and private credit globally with 24/7 liquidity.',
+          image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Trading',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'markets-2',
+          title: 'Deep Liquidity',
+          subtitle: 'Institutional',
+          description: 'Minimal slippage on large orders. Built for institutional investors and advanced traders.',
+          image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'View Order Book',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'markets-3',
+          title: 'Advanced Charting',
+          subtitle: 'Analysis',
+          description: 'Integrated TradingView charts with 100+ indicators. Perform deep technical analysis.',
+          image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Open Charts',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'markets-4',
+          title: 'Low Latency Engine',
+          subtitle: 'Speed',
+          description: 'Matching engine capable of 1M+ orders per second. Lightning-fast execution.',
+          image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=2034',
+          ctaText: 'Test API',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'markets-5',
+          title: 'Margin Trading',
+          subtitle: 'Leverage',
+          description: 'Up to 10x leverage for qualified users. Maximize your trading potential.',
+          image: 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Apply for Margin',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'markets-6',
+          title: 'Regulatory Compliance',
+          subtitle: 'Secure',
+          description: 'Built to meet global financial standards. Institutional custody and robust KYC/KYB.',
+          image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Read Compliance Docs',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     },
     'product-forge': {
@@ -209,6 +435,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'Do I need my own API keys?', a: 'You can use your own Cursor, GitHub, and Netlify keys for full control.' },
         { q: 'Is the code production-ready?', a: 'It is perfect for MVPs and prototypes, though complex apps may require manual refinement.' },
         { q: 'Who owns the IP?', a: 'You retain 100% ownership of the generated code and intellectual property.' }
+      ],
+      slides: [
+        {
+          id: 'forge-1',
+          title: 'AI-Powered SaaS Builder',
+          subtitle: 'Forge',
+          description: 'Go from prompt to deployed application in seconds. Auto-creates GitHub repos and deploys to Netlify.',
+          image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Building',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'forge-2',
+          title: 'Prompt-to-App Generation',
+          subtitle: 'Magic',
+          description: 'Describe your app in plain English and watch Forge generate production-ready code instantly.',
+          image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Try a Prompt',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'forge-3',
+          title: 'GitHub Integration',
+          subtitle: 'Version Control',
+          description: 'Automatically creates repositories, commits code, and manages branches for you.',
+          image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80&w=2088',
+          ctaText: 'Connect GitHub',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'forge-4',
+          title: 'Instant Netlify Deploy',
+          subtitle: 'Hosting',
+          description: 'Zero-config deployments to edge networks. Your app is live on the internet in seconds.',
+          image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072',
+          ctaText: 'Deploy Now',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'forge-5',
+          title: 'Modern Tech Stack',
+          subtitle: 'Architecture',
+          description: 'Generates high-quality React, Next.js, and Tailwind CSS code. No vendor lock-in.',
+          image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'View Stack',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'forge-6',
+          title: 'Iterative Design',
+          subtitle: 'Refine',
+          description: 'Chat with the AI to refine your app, add features, and fix bugs conversationally.',
+          image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Chatting',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     },
     'product-lendx': {
@@ -249,6 +531,62 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
         { q: 'Are there centralized API keys required?', a: 'No, LendX connects directly to decentralized protocols via your Web3 wallet.' },
         { q: 'What is LTV?', a: 'Loan-to-Value ratio. An LTV of 50% means you can borrow up to half the value of your collateral.' },
         { q: 'How does UpFrica make money here?', a: 'We charge a small fixed platform fee ($2) and a nominal fee on flash loans.' }
+      ],
+      slides: [
+        {
+          id: 'lendx-1',
+          title: 'Instant Crypto Loans',
+          subtitle: 'LendX',
+          description: 'Borrow against your assets instantly without credit checks. Access DeFi liquidity with ease.',
+          image: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&q=80&w=2069',
+          ctaText: 'Borrow Now',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'lendx-2',
+          title: 'Aggregated Liquidity',
+          subtitle: 'Best Rates',
+          description: 'Smart routing automatically finds the best rates across Aave, Compound, and Morpho.',
+          image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Compare Rates',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'lendx-3',
+          title: 'Flash Loans',
+          subtitle: 'Arbitrage',
+          description: 'Access uncollateralized liquidity for complex arbitrage opportunities in a single transaction.',
+          image: 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Execute Flash Loan',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'lendx-4',
+          title: 'High Yield Savings',
+          subtitle: 'Earn',
+          description: 'Deposit your idle crypto assets and earn high-yield interest paid out continuously.',
+          image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Start Earning',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'lendx-5',
+          title: 'Non-Custodial',
+          subtitle: 'Control',
+          description: 'You maintain full control of your private keys. Interact directly with smart contracts.',
+          image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=2070',
+          ctaText: 'Connect Wallet',
+          onCtaClick: () => onNavigate('auth')
+        },
+        {
+          id: 'lendx-6',
+          title: 'Risk Dashboard',
+          subtitle: 'Monitor',
+          description: 'Real-time health factor alerts and liquidation monitoring to protect your collateral.',
+          image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2015',
+          ctaText: 'View Dashboard',
+          onCtaClick: () => onNavigate('auth')
+        }
       ]
     }
   };
@@ -257,9 +595,9 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-900">
         Product not found.
-        <button onClick={() => onNavigate('products')} className="ml-4 text-indigo-400 hover:text-indigo-300">
+        <button onClick={() => onNavigate('products')} className="ml-4 text-indigo-600 hover:text-indigo-500">
           Back to Products
         </button>
       </div>
@@ -267,30 +605,30 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
   }
 
   const colorMap: Record<string, string> = {
-    blue: 'text-blue-400',
-    purple: 'text-purple-400',
-    emerald: 'text-emerald-400',
-    amber: 'text-amber-400',
-    indigo: 'text-indigo-400',
-    cyan: 'text-cyan-400',
+    blue: 'text-blue-600',
+    purple: 'text-purple-600',
+    emerald: 'text-emerald-600',
+    amber: 'text-amber-600',
+    indigo: 'text-indigo-600',
+    cyan: 'text-cyan-600',
   };
 
   const bgMap: Record<string, string> = {
-    blue: 'bg-blue-500',
-    purple: 'bg-purple-500',
-    emerald: 'bg-emerald-500',
-    amber: 'bg-amber-500',
-    indigo: 'bg-indigo-500',
-    cyan: 'bg-cyan-500',
+    blue: 'bg-blue-50',
+    purple: 'bg-purple-50',
+    emerald: 'bg-emerald-50',
+    amber: 'bg-amber-50',
+    indigo: 'bg-indigo-50',
+    cyan: 'bg-cyan-50',
   };
 
   const borderMap: Record<string, string> = {
-    blue: 'border-blue-500/20',
-    purple: 'border-purple-500/20',
-    emerald: 'border-emerald-500/20',
-    amber: 'border-amber-500/20',
-    indigo: 'border-indigo-500/20',
-    cyan: 'border-cyan-500/20',
+    blue: 'border-blue-200',
+    purple: 'border-purple-200',
+    emerald: 'border-emerald-200',
+    amber: 'border-amber-200',
+    indigo: 'border-indigo-200',
+    cyan: 'border-cyan-200',
   };
 
   const textColor = colorMap[product.color];
@@ -298,103 +636,46 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
   const borderColor = borderMap[product.color];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans">
-      {/* Global Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/20">
-                U
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white">UpFrica</span>
-            </div>
-            <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-              <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors">Home</button>
-              <button onClick={() => onNavigate('products')} className="text-white">Products</button>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => onNavigate('auth')}
-              className="text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2"
-            >
-              Log in
-            </button>
-            <button 
-              onClick={() => onNavigate('auth')}
-              className="text-sm font-medium bg-white text-slate-900 hover:bg-slate-100 transition-colors px-5 py-2.5 rounded-full flex items-center gap-2"
-            >
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      <Navbar onNavigate={onNavigate} transparent={true} />
 
-      {/* 1. HERO SECTION */}
-      <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto text-center">
-        <div className={`w-24 h-24 mx-auto rounded-3xl ${bgColor}/10 flex items-center justify-center mb-8 border ${borderColor}`}>
-          {product.icon}
-        </div>
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-          {product.name}
-        </h1>
-        <h2 className={`text-2xl md:text-3xl font-medium ${textColor} mb-8`}>
-          {product.tagline}
-        </h2>
-        <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
-          {product.description}
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button 
-            onClick={() => onNavigate('auth')}
-            className={`px-8 py-4 rounded-full font-medium ${bgColor} text-white hover:opacity-90 transition-opacity flex items-center gap-2 text-lg`}
-          >
-            Get Started <ArrowRight size={20} />
-          </button>
-          <button 
-            onClick={() => onNavigate('auth')}
-            className="px-8 py-4 rounded-full font-medium border border-white/10 text-white hover:bg-white/5 transition-colors text-lg"
-          >
-            Log in
-          </button>
-        </div>
-      </section>
+      {/* Hero Slider */}
+      <HeroSlider slides={product.slides} />
 
       {/* 2. PROBLEM SECTION */}
-      <section className="py-20 px-6 bg-slate-900/30 border-y border-white/5">
+      <section className="py-20 px-6 bg-white border-b border-slate-200">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-400">
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
               <Shield size={20} />
             </div>
-            <h3 className="text-2xl font-bold text-white">The Problem</h3>
+            <h3 className="text-2xl font-bold text-slate-900">The Problem</h3>
           </div>
-          <p className="text-xl text-slate-300 leading-relaxed border-l-4 border-red-500/30 pl-6">
+          <p className="text-xl text-slate-600 leading-relaxed border-l-4 border-red-200 pl-6">
             {product.problem}
           </p>
         </div>
       </section>
 
       {/* 3. SOLUTION SECTION */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-slate-50 border-b border-slate-200">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <div className={`w-10 h-10 rounded-full ${bgColor}/10 flex items-center justify-center ${textColor}`}>
+            <div className={`w-10 h-10 rounded-full ${bgColor} flex items-center justify-center ${textColor}`}>
               <Zap size={20} />
             </div>
-            <h3 className="text-2xl font-bold text-white">How UpFrica Solves This</h3>
+            <h3 className="text-2xl font-bold text-slate-900">How UpFrica Solves This</h3>
           </div>
-          <p className={`text-xl text-slate-300 leading-relaxed border-l-4 ${borderColor} pl-6`}>
+          <p className={`text-xl text-slate-600 leading-relaxed border-l-4 ${borderColor} pl-6`}>
             {product.solution}
           </p>
         </div>
       </section>
 
       {/* 4. BENEFITS SECTION */}
-      <section className="py-20 px-6 bg-slate-900/30 border-y border-white/5">
+      <section className="py-20 px-6 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl font-bold text-white mb-12 text-center">Why Choose {product.name}?</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-12 text-center">Why Choose {product.name}?</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-5xl mx-auto">
             {product.benefits.map((benefit: string, i: number) => {
               const [title, desc] = benefit.split(': ');
@@ -402,8 +683,8 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
                 <div key={i} className="flex items-start gap-4">
                   <CheckCircle2 className={`mt-1 shrink-0 ${textColor}`} size={20} />
                   <div>
-                    <span className="font-bold text-white block mb-1">{title}</span>
-                    <span className="text-slate-400">{desc}</span>
+                    <span className="font-bold text-slate-900 block mb-1">{title}</span>
+                    <span className="text-slate-600">{desc}</span>
                   </div>
                 </div>
               );
@@ -413,17 +694,17 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* 5. FEATURES SECTION */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl font-bold text-white mb-12 text-center">Core Features</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-12 text-center">Core Features</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {product.features.map((feature: any, i: number) => (
-              <div key={i} className={`p-8 rounded-3xl border ${borderColor} bg-slate-900/40 hover:bg-slate-900/80 transition-colors`}>
-                <div className={`w-14 h-14 rounded-2xl ${bgColor}/10 flex items-center justify-center mb-6`}>
+              <div key={i} className={`p-8 rounded-3xl border ${borderColor} bg-white hover:shadow-lg transition-shadow`}>
+                <div className={`w-14 h-14 rounded-2xl ${bgColor} flex items-center justify-center mb-6`}>
                   {feature.icon}
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">{feature.title}</h4>
-                <p className="text-slate-400 leading-relaxed">{feature.desc}</p>
+                <h4 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h4>
+                <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -431,17 +712,17 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* 6. HOW IT WORKS */}
-      <section className="py-20 px-6 bg-slate-900/30 border-y border-white/5">
+      <section className="py-20 px-6 bg-white border-b border-slate-200">
         <div className="max-w-5xl mx-auto">
-          <h3 className="text-3xl font-bold text-white mb-16 text-center">How It Works</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-16 text-center">How It Works</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-slate-800" />
+            <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-slate-200" />
             {product.steps.map((step: string, i: number) => (
               <div key={i} className="relative flex flex-col items-center text-center">
-                <div className={`w-16 h-16 rounded-full ${bgColor} text-white flex items-center justify-center text-2xl font-bold mb-6 relative z-10 shadow-lg shadow-${product.color}-500/20`}>
+                <div className={`w-16 h-16 rounded-full ${bgColor} ${textColor} flex items-center justify-center text-2xl font-bold mb-6 relative z-10 border ${borderColor}`}>
                   {i + 1}
                 </div>
-                <p className="text-slate-300 font-medium">{step}</p>
+                <p className="text-slate-700 font-medium">{step}</p>
               </div>
             ))}
           </div>
@@ -449,13 +730,13 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* 7. API / INFRASTRUCTURE */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-slate-50 border-b border-slate-200">
         <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Trusted Infrastructure</h3>
-          <p className="text-slate-400 mb-12">Built on top of industry-leading protocols and APIs.</p>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">Trusted Infrastructure</h3>
+          <p className="text-slate-600 mb-12">Built on top of industry-leading protocols and APIs.</p>
           <div className="flex flex-wrap justify-center gap-6">
             {product.integrations.map((integration: string, i: number) => (
-              <div key={i} className="px-8 py-4 rounded-2xl border border-white/10 bg-slate-900/50 text-white font-medium text-lg flex items-center gap-3">
+              <div key={i} className={`px-8 py-4 rounded-2xl border ${borderColor} bg-white text-slate-900 font-medium text-lg flex items-center gap-3 shadow-sm`}>
                 <Layers className={textColor} size={20} />
                 {integration}
               </div>
@@ -465,21 +746,21 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* 8. FAQ SECTION */}
-      <section className="py-20 px-6 bg-slate-900/30 border-y border-white/5">
+      <section className="py-20 px-6 bg-white border-b border-slate-200">
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-3xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-12 text-center">Frequently Asked Questions</h3>
           <div className="space-y-4">
             {product.faqs.map((faq: any, i: number) => (
-              <div key={i} className="border border-white/10 rounded-2xl overflow-hidden bg-slate-900/50">
+              <div key={i} className={`border ${borderColor} rounded-2xl overflow-hidden bg-slate-50`}>
                 <button 
                   className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-medium text-white text-lg">{faq.q}</span>
-                  <ChevronDown className={`text-slate-400 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
+                  <span className="font-medium text-slate-900 text-lg">{faq.q}</span>
+                  <ChevronDown className={`text-slate-500 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-5 text-slate-400 leading-relaxed">
+                  <div className="px-6 pb-5 text-slate-600 leading-relaxed">
                     {faq.a}
                   </div>
                 )}
@@ -490,22 +771,22 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* 9. FINAL CTA */}
-      <section className="py-32 px-6 text-center">
-        <div className={`max-w-4xl mx-auto p-12 rounded-3xl border ${borderColor} bg-gradient-to-b from-${product.color}-500/10 to-transparent`}>
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to transform your business?</h2>
-          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+      <section className="py-32 px-6 text-center bg-slate-50">
+        <div className={`max-w-4xl mx-auto p-12 rounded-3xl border ${borderColor} bg-white shadow-xl`}>
+          <h2 className="text-4xl font-bold text-slate-900 mb-6">Ready to transform your business?</h2>
+          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
             Join thousands of users leveraging {product.name} on the UpFrica platform today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button 
               onClick={() => onNavigate('auth')}
-              className={`px-8 py-4 rounded-full font-medium ${bgColor} text-white hover:opacity-90 transition-opacity flex items-center gap-2 text-lg`}
+              className={`px-8 py-4 rounded-full font-medium ${bgColor.replace('50', '600')} text-white hover:opacity-90 transition-opacity flex items-center gap-2 text-lg shadow-lg`}
             >
               Get Started Now <ArrowRight size={20} />
             </button>
             <button 
               onClick={() => onNavigate('auth')}
-              className="px-8 py-4 rounded-full font-medium border border-white/10 text-white hover:bg-white/5 transition-colors text-lg"
+              className="px-8 py-4 rounded-full font-medium border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors text-lg"
             >
               Log in
             </button>
@@ -514,21 +795,21 @@ export function PublicProductView({ productId, onNavigate }: PublicProductViewPr
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-12 px-6 bg-slate-950">
+      <footer className="border-t border-slate-200 py-12 px-6 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white">
               U
             </div>
-            <span className="text-lg font-bold tracking-tight text-white">UpFrica</span>
+            <span className="text-lg font-bold tracking-tight text-slate-900">UpFrica</span>
           </div>
           <p className="text-slate-500 text-sm text-center md:text-left">
             © {new Date().getFullYear()} Oskayi Consult Ltd, Ghana. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Contact</a>
           </div>
         </div>
       </footer>

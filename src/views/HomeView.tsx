@@ -1,6 +1,8 @@
 import React from 'react';
 import { ViewState } from '../types';
 import { CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Shield, Globe2, Zap, ChevronRight, Coins } from 'lucide-react';
+import { Navbar } from '../components/Navbar';
+import { HeroSlider } from '../components/HeroSlider';
 
 interface HomeViewProps {
   onNavigate: (view: ViewState) => void;
@@ -12,9 +14,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'flowpay',
       name: 'FlowPay',
       icon: CreditCard,
-      color: 'text-blue-400',
-      bgColor: 'bg-blue-500/10',
-      borderColor: 'border-blue-500/20',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-100',
       description: 'Global fiat-to-crypto settlement. Seamlessly accept payments via Paystack and settle instantly in USDC. Built for modern African businesses.',
       features: ['Instant USDC Settlement', 'Paystack Integration', 'Multi-currency Support']
     },
@@ -22,9 +24,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'creatorx',
       name: 'CreatorX',
       icon: Paintbrush,
-      color: 'text-purple-400',
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500/20',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-100',
       description: 'The ultimate monetization platform for creators. Manage subscriptions, token-gated content, and receive global payouts without borders.',
       features: ['Token-gated Content', 'Global Payouts', 'Subscription Management']
     },
@@ -32,9 +34,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'copytrade',
       name: 'CopyTrade',
       icon: TrendingUp,
-      color: 'text-emerald-400',
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-500/20',
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-100',
       description: 'Automated crypto trading. Follow top-performing traders, mirror their strategies in real-time, and manage your portfolio risk effortlessly.',
       features: ['Real-time Execution', 'Risk Management', 'Top Trader Leaderboard']
     },
@@ -42,9 +44,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'markets',
       name: 'Markets',
       icon: Landmark,
-      color: 'text-amber-400',
-      bgColor: 'bg-amber-500/10',
-      borderColor: 'border-amber-500/20',
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-100',
       description: 'Access Real World Assets (RWA) through tokenization. Invest in fractionalized real estate, commodities, and private credit globally.',
       features: ['Fractional Ownership', '24/7 Liquidity', 'Regulated Assets']
     },
@@ -52,9 +54,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'forge',
       name: 'Forge',
       icon: Terminal,
-      color: 'text-indigo-400',
-      bgColor: 'bg-indigo-500/10',
-      borderColor: 'border-indigo-500/20',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-50',
+      borderColor: 'border-indigo-100',
       description: 'AI-powered no-code SaaS builder. Go from prompt to deployed application in seconds. Auto-creates GitHub repos and deploys to Netlify.',
       features: ['Prompt-to-app generation', 'Code preview', 'GitHub integration', 'Netlify deploy']
     },
@@ -62,121 +64,113 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       id: 'lendx',
       name: 'LendX',
       icon: Coins,
-      color: 'text-cyan-400',
-      bgColor: 'bg-cyan-500/10',
-      borderColor: 'border-cyan-500/20',
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-50',
+      borderColor: 'border-cyan-100',
       description: 'Instant crypto loans and DeFi liquidity. Borrow against your assets, access flash loans, and optimize yield strategies using Aave.',
       features: ['Overcollateralized Loans', 'Flash Loan Access', 'DeFi Yield Optimization']
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-indigo-500/30 font-sans overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/20">
-                U
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white">UpFrica</span>
-            </div>
-            <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-              <button onClick={() => onNavigate('home')} className="text-white">Home</button>
-              <button onClick={() => onNavigate('products')} className="hover:text-white transition-colors">Products</button>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => onNavigate('auth')}
-              className="text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2"
-            >
-              Log in
-            </button>
-            <button 
-              onClick={() => onNavigate('auth')}
-              className="text-sm font-medium bg-white text-slate-900 hover:bg-slate-100 transition-colors px-5 py-2.5 rounded-full flex items-center gap-2"
-            >
-              Get Started <ArrowRight size={16} />
-            </button>
-          </div>
-        </div>
-      </nav>
+  const slides = [
+    {
+      id: 'slide-1',
+      title: 'The Financial Operating System for Africa and Global Economy',
+      subtitle: 'Oskayi Consult Ltd, Ghana',
+      description: 'Unify your payments, trading, tokenized assets, and software creation in one institutional-grade platform. Built for scale, security, and speed.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070',
+      ctaText: 'Open an Account',
+      onCtaClick: () => onNavigate('auth')
+    },
+    {
+      id: 'slide-2',
+      title: 'FlowPay: Global Fiat-to-Crypto Settlement',
+      subtitle: 'Payments Infrastructure',
+      description: 'Accept payments globally via Paystack and settle instantly in USDC. Eliminate FX risk and cross-border friction.',
+      image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=2071',
+      ctaText: 'Explore FlowPay',
+      onCtaClick: () => onNavigate('product-flowpay' as ViewState)
+    },
+    {
+      id: 'slide-3',
+      title: 'CreatorX: Monetize Without Borders',
+      subtitle: 'Creator Economy',
+      description: 'The ultimate platform for creators to manage subscriptions, token-gated content, and receive global payouts instantly.',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2070',
+      ctaText: 'Explore CreatorX',
+      onCtaClick: () => onNavigate('product-creatorx' as ViewState)
+    },
+    {
+      id: 'slide-4',
+      title: 'CopyTrade: Automated Crypto Trading',
+      subtitle: 'Algorithmic Trading',
+      description: 'Follow top-performing traders, mirror their strategies in real-time, and manage your portfolio risk effortlessly.',
+      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2070',
+      ctaText: 'Explore CopyTrade',
+      onCtaClick: () => onNavigate('product-copytrade' as ViewState)
+    },
+    {
+      id: 'slide-5',
+      title: 'Markets: Tokenized Real World Assets',
+      subtitle: 'Institutional Assets',
+      description: 'Invest in fractionalized real estate, commodities, and private credit globally with 24/7 liquidity.',
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070',
+      ctaText: 'Explore Markets',
+      onCtaClick: () => onNavigate('product-markets' as ViewState)
+    },
+    {
+      id: 'slide-6',
+      title: 'Forge: AI-Powered SaaS Builder',
+      subtitle: 'Development Platform',
+      description: 'Go from prompt to deployed application in seconds. Auto-creates GitHub repos and deploys to Netlify.',
+      image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=2070',
+      ctaText: 'Explore Forge',
+      onCtaClick: () => onNavigate('product-forge' as ViewState)
+    }
+  ];
 
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 px-6">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-600/20 blur-[120px]" />
-          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px]" />
-        </div>
-        
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-indigo-300 mb-8">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-            Oskayio Consults
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-8 leading-[1.1]">
-            The Financial Operating System <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">
-              for Africa and Global Economy
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Unify your payments, trading, tokenized assets, and software creation in one institutional-grade platform. Built for scale, security, and speed.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button 
-              onClick={() => onNavigate('auth')}
-              className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-medium text-lg transition-all shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2"
-            >
-              Open an Account <ArrowRight size={20} />
-            </button>
-            <button 
-              onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-medium text-lg transition-all flex items-center justify-center gap-2"
-            >
-              Explore Products
-            </button>
-          </div>
-        </div>
-      </section>
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-500/30 font-sans overflow-x-hidden">
+      <Navbar onNavigate={onNavigate} transparent={true} />
+
+      {/* Hero Slider */}
+      <HeroSlider slides={slides} />
 
       {/* Features Grid */}
-      <section className="py-20 border-y border-white/5 bg-slate-900/50">
+      <section className="py-20 border-b border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col items-center text-center p-6">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
                 <Shield size={24} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">Institutional Security</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">Bank-grade encryption, mandatory 2FA, and robust KYC/KYB compliance protocols.</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Institutional Security</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Bank-grade encryption, mandatory 2FA, and robust KYC/KYB compliance protocols.</p>
             </div>
             <div className="flex flex-col items-center text-center p-6">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
                 <Globe2 size={24} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">Borderless Access</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">Connect local African payment rails to global decentralized finance liquidity.</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Borderless Access</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Connect local African payment rails to global decentralized finance liquidity.</p>
             </div>
             <div className="flex flex-col items-center text-center p-6">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
                 <Zap size={24} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">Lightning Fast</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">Instant settlements, real-time trading execution, and AI-powered deployments.</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Lightning Fast</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Instant settlements, real-time trading execution, and AI-powered deployments.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Products Section */}
-      <section id="products" className="py-32 px-6 relative">
+      <section id="products" className="py-32 px-6 relative bg-slate-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">One Platform. <br className="md:hidden" />Infinite Possibilities.</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">One Platform. <br className="md:hidden" />Infinite Possibilities.</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
               Choose the product that fits your needs. Our integrated ecosystem allows you to seamlessly move between payments, trading, and building.
             </p>
           </div>
@@ -185,22 +179,21 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             {products.map((product, index) => (
               <div 
                 key={product.id}
-                className={`group relative p-8 rounded-3xl border bg-slate-900/40 hover:bg-slate-900/80 transition-all duration-300 ${product.borderColor}`}
+                className={`group relative p-8 rounded-3xl border bg-white hover:shadow-xl transition-all duration-300 ${product.borderColor}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent rounded-3xl pointer-events-none" />
                 <div className="relative z-10">
                   <div className={`w-14 h-14 rounded-2xl ${product.bgColor} ${product.color} flex items-center justify-center mb-6`}>
                     <product.icon size={28} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{product.name}</h3>
-                  <p className="text-slate-400 mb-8 leading-relaxed min-h-[48px]">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">{product.name}</h3>
+                  <p className="text-slate-600 mb-8 leading-relaxed min-h-[48px]">
                     {product.description}
                   </p>
                   
                   <div className="space-y-3 mb-8">
                     {product.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-slate-300">
-                        <div className={`w-1.5 h-1.5 rounded-full ${product.bgColor.replace('/10', '')}`} />
+                      <div key={i} className="flex items-center gap-3 text-sm text-slate-700">
+                        <div className={`w-1.5 h-1.5 rounded-full ${product.bgColor.replace('50', '500')}`} />
                         {feature}
                       </div>
                     ))}
@@ -222,18 +215,17 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-indigo-600/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
+      <section className="py-24 px-6 relative overflow-hidden bg-white border-t border-slate-200">
+        <div className="absolute inset-0 bg-indigo-50" />
         
-        <div className="max-w-4xl mx-auto relative z-10 text-center bg-slate-900/50 backdrop-blur-xl border border-white/10 p-12 md:p-20 rounded-[3rem]">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to transform your business?</h2>
-          <p className="text-lg text-slate-400 mb-10 max-w-xl mx-auto">
+        <div className="max-w-4xl mx-auto relative z-10 text-center bg-white border border-slate-200 p-12 md:p-20 rounded-[3rem] shadow-xl shadow-slate-200/50">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">Ready to transform your business?</h2>
+          <p className="text-lg text-slate-600 mb-10 max-w-xl mx-auto">
             Join thousands of users building the future of finance and technology on UpFrica.
           </p>
           <button 
             onClick={() => onNavigate('auth')}
-            className="px-8 py-4 bg-white text-slate-900 hover:bg-slate-100 rounded-full font-bold text-lg transition-all shadow-xl shadow-white/10 flex items-center justify-center gap-2 mx-auto"
+            className="px-8 py-4 bg-indigo-600 text-white hover:bg-indigo-700 rounded-full font-bold text-lg transition-all shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2 mx-auto"
           >
             Create Free Account <ArrowRight size={20} />
           </button>
@@ -241,21 +233,21 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-12 px-6 bg-slate-950">
+      <footer className="border-t border-slate-200 py-12 px-6 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white">
               U
             </div>
-            <span className="text-lg font-bold tracking-tight text-white">UpFrica</span>
+            <span className="text-lg font-bold tracking-tight text-slate-900">UpFrica</span>
           </div>
           <p className="text-slate-500 text-sm text-center md:text-left">
             © {new Date().getFullYear()} Oskayi Consult Ltd, Ghana. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
