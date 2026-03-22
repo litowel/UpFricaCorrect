@@ -18,4 +18,4 @@ export type Transaction = {
   description: string;
 };
 
-export type ViewState = 'home' | 'auth' | 'dashboard' | 'flowpay' | 'creatorx' | 'copytrade' | 'markets' | 'forge' | 'kyc' | 'lendx' | 'payments' | 'settings' | 'products' | 'product-flowpay' | 'product-creatorx' | 'product-copytrade' | 'product-markets' | 'product-forge' | 'product-lendx';
+export type ViewState = 'home' | 'auth' | 'verify-2fa' | 'dashboard' | 'flowpay' | 'creatorx' | 'copytrade' | 'markets' | 'forge' | 'kyc' | 'lendx' | 'payments' | 'settings' | 'products' | 'product-flowpay' | 'product-creatorx' | 'product-copytrade' | 'product-markets' | 'product-forge' | 'product-lendx';

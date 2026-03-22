@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { ViewState } from '../types';
+import { ViewState, User } from '../types';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
   onNavigate: (view: ViewState) => void;
   transparent?: boolean;
+  user?: User | null;
 }
 
-export function Navbar({ onNavigate, transparent = false }: NavbarProps) {
+export function Navbar({ onNavigate, transparent = false, user = null }: NavbarProps) {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
 
   const products = [
@@ -81,18 +82,29 @@ export function Navbar({ onNavigate, transparent = false }: NavbarProps) {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <button 
-            onClick={() => onNavigate('auth')}
-            className={`text-sm font-medium ${transparent ? 'text-white hover:text-white/80' : 'text-slate-600 hover:text-slate-900'} transition-colors px-4 py-2`}
-          >
-            Log in
-          </button>
-          <button 
-            onClick={() => onNavigate('auth')}
-            className={`text-sm font-medium ${transparent ? 'bg-white text-slate-900 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-slate-800'} transition-colors px-5 py-2.5 rounded-full flex items-center gap-2`}
-          >
-            Get Started <ArrowRight size={16} />
-          </button>
+          {user ? (
+            <button 
+              onClick={() => onNavigate('dashboard')}
+              className={`text-sm font-medium ${transparent ? 'bg-white text-slate-900 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-slate-800'} transition-colors px-5 py-2.5 rounded-full flex items-center gap-2`}
+            >
+              Dashboard <ArrowRight size={16} />
+            </button>
+          ) : (
+            <>
+              <button 
+                onClick={() => onNavigate('auth')}
+                className={`text-sm font-medium ${transparent ? 'text-white hover:text-white/80' : 'text-slate-600 hover:text-slate-900'} transition-colors px-4 py-2`}
+              >
+                Log in
+              </button>
+              <button 
+                onClick={() => onNavigate('auth')}
+                className={`text-sm font-medium ${transparent ? 'bg-white text-slate-900 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-slate-800'} transition-colors px-5 py-2.5 rounded-full flex items-center gap-2`}
+              >
+                Get Started <ArrowRight size={16} />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

@@ -20,9 +20,10 @@ import { PaymentsView } from './views/PaymentsView';
 import { SettingsView } from './views/SettingsView';
 import { PublicProductView } from './views/PublicProductView';
 import { ProductsView } from './views/ProductsView';
+import { Verify2FAView } from './views/Verify2FAView';
 
 export default function App() {
-  const { user, setUser, currentView, navigate, login, logout, isLoading } = useAppStore();
+  const { user, setUser, currentView, navigate, login, logout, isLoading, is2FAVerified, verify2FA } = useAppStore();
 
   if (isLoading) {
     return (
@@ -48,6 +49,18 @@ export default function App() {
       return <PublicProductView productId={currentView} onNavigate={navigate} />;
     }
     return <HomeView onNavigate={navigate} />;
+  }
+
+  if (currentView === 'verify-2fa' && !is2FAVerified) {
+    return <Verify2FAView user={user} onVerify={verify2FA} onBack={logout} />;
+  }
+
+  if (currentView.startsWith('product-')) {
+    return <PublicProductView productId={currentView} onNavigate={navigate} user={user} />;
+  }
+
+  if (currentView === 'products') {
+    return <ProductsView onNavigate={navigate} user={user} />;
   }
 
   const renderView = () => {

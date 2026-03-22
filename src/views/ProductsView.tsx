@@ -1,13 +1,14 @@
 import React from 'react';
-import { ViewState } from '../types';
+import { ViewState, User } from '../types';
 import { CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, Coins, ArrowRight, ChevronRight } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 
 interface ProductsViewProps {
   onNavigate: (view: ViewState) => void;
+  user?: User | null;
 }
 
-export function ProductsView({ onNavigate }: ProductsViewProps) {
+export function ProductsView({ onNavigate, user = null }: ProductsViewProps) {
   const products = [
     {
       id: 'flowpay',
@@ -73,7 +74,7 @@ export function ProductsView({ onNavigate }: ProductsViewProps) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar onNavigate={onNavigate} user={user} />
 
       {/* Hero */}
       <section className="pt-40 pb-20 px-6 text-center bg-white border-b border-slate-200">
