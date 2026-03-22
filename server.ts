@@ -19,6 +19,7 @@ function createJWT(payload: any) {
 
 // In-memory user store for demonstration
 const users: any[] = [];
+const verificationCodes = new Map<string, { code: string; mode: string; authMethod: string; selectedProduct?: string }>();
 
 async function startServer() {
   const app = express();
@@ -27,47 +28,64 @@ async function startServer() {
   app.use(express.json());
 
   // API Routes
-  app.post('/api/auth/signup', (req, res) => {
-    const { email, password, name, selectedProduct } = req.body;
+  app.post('/api/auth/request-code', (req, res) => {
+    const { phoneNumber, authMethod, mode, selectedProduct } = req.body;
     
-    if (users.find(u => u.email === email)) {
+    if (mode === 'signup' && users.find(u => u.phoneNumber === phoneNumber)) {
       return res.status(400).json({ error: 'User already exists' });
     }
-
-    const newUser = {
-      id: 'usr_' + Math.random().toString(36).substr(2, 9),
-      email,
-      password, // In a real app, hash this!
-      name: name || email.split('@')[0],
-      kycStatus: 'unverified',
-      walletBalance: 0,
-      usdcBalance: 0,
-      selectedProduct: selectedProduct || 'dashboard'
-    };
-
-    users.push(newUser);
-
-    const token = createJWT({ id: newUser.id, email: newUser.email });
-    
-    // Remove password before sending to client
-    const { password: _, ...userWithoutPassword } = newUser;
-    
-    res.json({ token, user: userWithoutPassword });
-  });
-
-  app.post('/api/auth/login', (req, res) => {
-    const { email, password } = req.body;
-    
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (mode === 'login' && !users.find(u => u.phoneNumber === phoneNumber)) {
+      return res.status(404).json({ error: 'User not found. Please sign up.' });
     }
 
-    const token = createJWT({ id: user.id, email: user.email });
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    verificationCodes.set(phoneNumber, { code, mode, authMethod, selectedProduct });
     
-    const { password: _, ...userWithoutPassword } = user;
-    res.json({ token, user: userWithoutPassword });
+    let productName = 'UpFrica';
+    if (mode === 'signup' && selectedProduct) {
+      productName = selectedProduct.charAt(0).toUpperCase() + selectedProduct.slice(1);
+    } else if (mode === 'login') {
+      const user = users.find(u => u.phoneNumber === phoneNumber);
+      if (user && user.selectedProduct) {
+        productName = user.selectedProduct.charAt(0).toUpperCase() + user.selectedProduct.slice(1);
+      }
+    }
+
+    const message = `Your ${productName} verification code is: ${code}`;
+    
+    // In a real app, send via WhatsApp/Telegram API here.
+    res.json({ success: true, code, message, productName });
+  });
+
+  app.post('/api/auth/verify-code', (req, res) => {
+    const { phoneNumber, code } = req.body;
+    
+    const savedData = verificationCodes.get(phoneNumber);
+    if (!savedData || savedData.code !== code) {
+      return res.status(400).json({ error: 'Invalid or expired verification code' });
+    }
+    
+    verificationCodes.delete(phoneNumber);
+    
+    let user;
+    if (savedData.mode === 'signup') {
+      user = {
+        id: 'usr_' + Math.random().toString(36).substr(2, 9),
+        phoneNumber,
+        authMethod: savedData.authMethod,
+        name: 'User ' + phoneNumber.slice(-4),
+        kycStatus: 'unverified',
+        walletBalance: 0,
+        usdcBalance: 0,
+        selectedProduct: savedData.selectedProduct || 'dashboard'
+      };
+      users.push(user);
+    } else {
+      user = users.find(u => u.phoneNumber === phoneNumber);
+    }
+    
+    const token = createJWT({ id: user.id, phoneNumber: user.phoneNumber });
+    res.json({ token, user });
   });
 
   // Vite middleware for development

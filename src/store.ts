@@ -74,10 +74,14 @@ export function useAppStore() {
       setToken(jwtToken);
       localStorage.setItem('upfrica_token', jwtToken);
     }
-    setIs2FAVerified(false);
-    sessionStorage.removeItem('upfrica_2fa_verified');
-    setCurrentView('verify-2fa');
-    window.history.pushState({}, '', '/verify-2fa');
+    
+    // WhatsApp/Telegram verification acts as 2FA, so we mark it verified
+    setIs2FAVerified(true);
+    sessionStorage.setItem('upfrica_2fa_verified', 'true');
+    
+    const nextView = userData.selectedProduct || 'dashboard';
+    setCurrentView(nextView);
+    window.history.pushState({}, '', `/${nextView}`);
   };
 
   const verify2FA = () => {
