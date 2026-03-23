@@ -19,7 +19,7 @@ function createJWT(payload: any) {
 
 // In-memory user store for demonstration
 const users: any[] = [];
-const verificationCodes = new Map<string, { code: string; mode: string; authMethod: string; selectedProduct?: string }>();
+const verificationCodes = new Map<string, { code: string; mode: string; selectedProduct?: string }>();
 
 async function startServer() {
   const app = express();
@@ -28,24 +28,24 @@ async function startServer() {
   app.use(express.json());
 
   // API Routes
-  app.post('/api/auth/request-code', (req, res) => {
-    const { phoneNumber, authMethod, mode, selectedProduct } = req.body;
+  app.post('/api/auth/request-code', async (req, res) => {
+    const { telegramId, mode, selectedProduct } = req.body;
     
-    if (mode === 'signup' && users.find(u => u.phoneNumber === phoneNumber)) {
+    if (mode === 'signup' && users.find(u => u.telegramId === telegramId)) {
       return res.status(400).json({ error: 'User already exists' });
     }
-    if (mode === 'login' && !users.find(u => u.phoneNumber === phoneNumber)) {
+    if (mode === 'login' && !users.find(u => u.telegramId === telegramId)) {
       return res.status(404).json({ error: 'User not found. Please sign up.' });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    verificationCodes.set(phoneNumber, { code, mode, authMethod, selectedProduct });
+    verificationCodes.set(telegramId, { code, mode, selectedProduct });
     
     let productName = 'UpFrica';
     if (mode === 'signup' && selectedProduct) {
       productName = selectedProduct.charAt(0).toUpperCase() + selectedProduct.slice(1);
     } else if (mode === 'login') {
-      const user = users.find(u => u.phoneNumber === phoneNumber);
+      const user = users.find(u => u.telegramId === telegramId);
       if (user && user.selectedProduct) {
         productName = user.selectedProduct.charAt(0).toUpperCase() + user.selectedProduct.slice(1);
       }
@@ -53,27 +53,74 @@ async function startServer() {
 
     const message = `Your ${productName} verification code is: ${code}`;
     
-    // In a real app, send via WhatsApp/Telegram API here.
-    res.json({ success: true, code, message, productName });
+    try {
+      const botToken = process.env.TELEGRAM_BOT_TOKEN;
+      
+      if (!botToken) {
+        console.warn('TELEGRAM_BOT_TOKEN is missing. Simulating message delivery.');
+        console.log(`[SIMULATED TELEGRAM TO ${telegramId}]: ${message}`);
+        return res.json({ 
+          success: true, 
+          message: 'Code sent successfully (simulated)', 
+          productName,
+          simulatedCode: code 
+        });
+      }
+      
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: telegramId,
+          text: message,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Telegram API Error:', errorData);
+        
+        // Fallback to simulation so the user is never blocked
+        console.warn('Telegram delivery failed. Falling back to simulation.');
+        return res.json({ 
+          success: true, 
+          message: `Telegram delivery failed (${errorData.description || 'Unknown error'}). Using simulated code.`, 
+          productName,
+          simulatedCode: code 
+        });
+      }
+      
+      res.json({ success: true, message: 'Code sent successfully', productName });
+    } catch (error: any) {
+      console.error('Failed to send message:', error);
+      // Fallback to simulation on network errors too
+      return res.json({ 
+        success: true, 
+        message: `Network error. Using simulated code.`, 
+        productName,
+        simulatedCode: code 
+      });
+    }
   });
 
   app.post('/api/auth/verify-code', (req, res) => {
-    const { phoneNumber, code } = req.body;
+    const { telegramId, code } = req.body;
     
-    const savedData = verificationCodes.get(phoneNumber);
+    const savedData = verificationCodes.get(telegramId);
     if (!savedData || savedData.code !== code) {
       return res.status(400).json({ error: 'Invalid or expired verification code' });
     }
     
-    verificationCodes.delete(phoneNumber);
+    verificationCodes.delete(telegramId);
     
     let user;
     if (savedData.mode === 'signup') {
       user = {
         id: 'usr_' + Math.random().toString(36).substr(2, 9),
-        phoneNumber,
-        authMethod: savedData.authMethod,
-        name: 'User ' + phoneNumber.slice(-4),
+        telegramId,
+        name: 'User ' + telegramId.slice(-4),
         kycStatus: 'unverified',
         walletBalance: 0,
         usdcBalance: 0,
@@ -81,10 +128,10 @@ async function startServer() {
       };
       users.push(user);
     } else {
-      user = users.find(u => u.phoneNumber === phoneNumber);
+      user = users.find(u => u.telegramId === telegramId);
     }
     
-    const token = createJWT({ id: user.id, phoneNumber: user.phoneNumber });
+    const token = createJWT({ id: user.id, telegramId: user.telegramId });
     res.json({ token, user });
   });
 

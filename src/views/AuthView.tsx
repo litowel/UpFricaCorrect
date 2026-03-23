@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, ViewState } from '../types';
 import { motion } from 'motion/react';
-import { ShieldCheck, CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, Phone, CheckCircle2, Coins, MessageCircle } from 'lucide-react';
+import { ShieldCheck, CreditCard, Paintbrush, TrendingUp, Landmark, Terminal, ArrowRight, CheckCircle2, Coins, MessageCircle } from 'lucide-react';
 
 interface AuthViewProps {
   onLogin: (user: User, token?: string) => void;
@@ -10,8 +10,7 @@ interface AuthViewProps {
 
 export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
   const [mode, setMode] = useState<'login' | 'signup' | 'verify'>('signup');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [authMethod, setAuthMethod] = useState<'whatsapp' | 'telegram'>('whatsapp');
+  const [telegramId, setTelegramId] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<ViewState | ''>('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -46,8 +45,8 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
       return;
     }
     
-    if (!phoneNumber || phoneNumber.length < 8) {
-      setError('Please enter a valid phone number.');
+    if (!telegramId) {
+      setError('Please enter your Telegram Chat ID.');
       return;
     }
     
@@ -58,8 +57,7 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          phoneNumber, 
-          authMethod, 
+          telegramId, 
           mode, 
           selectedProduct 
         })
@@ -71,7 +69,13 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
         throw new Error(data.error || 'Failed to request code');
       }
 
-      setSuccessMessage(`Code sent to your ${authMethod === 'whatsapp' ? 'WhatsApp' : 'Telegram'}!`);
+      if (data.simulatedCode) {
+        setSuccessMessage(`Simulated code: ${data.simulatedCode}`);
+        setVerificationCode(data.simulatedCode);
+      } else {
+        setSuccessMessage(`Code sent to your Telegram!`);
+      }
+      
       setMode('verify');
     } catch (err: any) {
       setError(err.message);
@@ -89,7 +93,7 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
       const response = await fetch('/api/auth/verify-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber, code: verificationCode })
+        body: JSON.stringify({ telegramId, code: verificationCode })
       });
 
       const data = await response.json();
@@ -138,9 +142,9 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
                   <div className="w-16 h-16 bg-emerald-500/10 rounded-full mx-auto flex items-center justify-center mb-4">
                     <ShieldCheck className="text-emerald-400" size={32} />
                   </div>
-                  <h2 className="text-xl font-bold text-slate-100">Verify Your Number</h2>
+                  <h2 className="text-xl font-bold text-slate-100">Verify Your Identity</h2>
                   <p className="text-slate-400 text-sm mt-2">
-                    Enter the 6-digit code sent to your {authMethod === 'whatsapp' ? 'WhatsApp' : 'Telegram'} at {phoneNumber}
+                    Enter the 6-digit code sent to your Telegram at {telegramId}
                   </p>
                 </div>
 
@@ -185,7 +189,7 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
                   onClick={() => setMode('signup')}
                   className="w-full text-slate-500 hover:text-slate-300 text-sm font-medium transition-colors"
                 >
-                  Change phone number or method
+                  Change Telegram ID
                 </button>
               </form>
             ) : (
@@ -249,50 +253,21 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-2">Phone Number</label>
+                    <label className="block text-sm font-medium text-slate-400 mb-2">Telegram Chat ID</label>
                     <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+                      <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
                       <input
-                        type="tel"
+                        type="text"
                         required
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        value={telegramId}
+                        onChange={(e) => setTelegramId(e.target.value)}
                         className="w-full pl-12 pr-4 py-3.5 bg-slate-950 border border-slate-800 rounded-xl focus:bg-slate-900 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all outline-none text-slate-200"
-                        placeholder="+1234567890"
+                        placeholder="e.g., 123456789"
                       />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-2">Receive Code Via</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setAuthMethod('whatsapp')}
-                        className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
-                          authMethod === 'whatsapp' 
-                            ? 'bg-[#25D366]/10 border-[#25D366] text-[#25D366]' 
-                            : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
-                        }`}
-                      >
-                        <MessageCircle size={18} />
-                        <span className="font-medium text-sm">WhatsApp</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setAuthMethod('telegram')}
-                        className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
-                          authMethod === 'telegram' 
-                            ? 'bg-[#0088cc]/10 border-[#0088cc] text-[#0088cc]' 
-                            : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
-                        }`}
-                      >
-                        <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21.9333 3.65556C21.9333 3.65556 23.5333 3.05556 23.4 4.52222C23.3333 5.18889 22.8 8.65556 22.3333 12.3889L20.6667 20.9222C20.6667 20.9222 20.5333 22.1222 19.4667 22.3889C18.4 22.6556 16.6667 21.4556 16.4 21.1889C16.1333 20.9889 11.4 17.9222 9.66667 16.3889C9.2 15.9889 8.66667 15.1889 9.73333 14.2556L15.6667 8.52222C16.3333 7.85556 17 6.12222 14.0667 8.12222L6.13333 13.5222C6.13333 13.5222 5.13333 14.1222 3.26667 13.5889L-0.600002 12.3889C-0.600002 12.3889 -2.06667 11.4556 0.866665 10.3889C7.13333 7.65556 14.8 4.52222 21.9333 3.65556Z" fill="currentColor"/>
-                        </svg>
-                        <span className="font-medium text-sm">Telegram</span>
-                      </button>
-                    </div>
+                    <p className="text-xs text-slate-500 mt-2">
+                      <strong>Important:</strong> This is a numeric ID, not your phone number or username. Get your Chat ID by messaging <a href="https://t.me/userinfobot" target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline">@userinfobot</a> on Telegram.
+                    </p>
                   </div>
                 </div>
 
@@ -301,7 +276,7 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
                   disabled={isLoading}
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-900/20 disabled:opacity-50"
                 >
-                  {isLoading ? 'Sending Code...' : `Get Code via ${authMethod === 'whatsapp' ? 'WhatsApp' : 'Telegram'}`}
+                  {isLoading ? 'Sending Code...' : `Get Code via Telegram`}
                   {!isLoading && <ArrowRight size={18} />}
                 </button>
               </form>

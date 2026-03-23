@@ -1,7 +1,6 @@
 export type User = {
   id: string;
-  phoneNumber: string;
-  authMethod: 'whatsapp' | 'telegram';
+  telegramId: string;
   name: string;
   kycStatus: 'pending' | 'verified' | 'rejected' | 'unverified';
   walletBalance: number;
