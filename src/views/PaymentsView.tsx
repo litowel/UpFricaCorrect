@@ -1,12 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '../types';
-import { CreditCard, ArrowUpRight, ArrowDownLeft, Clock, Search, Filter } from 'lucide-react';
+import { CreditCard, ArrowUpRight, ArrowDownLeft, Clock, Search, Filter, Plus, Edit2, Trash2, Building, Check } from 'lucide-react';
 
 interface PaymentsViewProps {
   user: User;
 }
 
+interface PaymentMethod {
+  id: string;
+  type: 'card' | 'bank';
+  last4: string;
+  expiry?: string;
+  isDefault: boolean;
+  name: string;
+}
+
 export function PaymentsView({ user }: PaymentsViewProps) {
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([
+    { id: '1', type: 'card', name: 'Visa', last4: '4242', expiry: '12/24', isDefault: true }
+  ]);
+  const [isAddingMethod, setIsAddingMethod] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ type: 'card', name: '', last4: '', expiry: '' });
+
+  const handleSaveMethod = () => {
+    if (editingId) {
+      setPaymentMethods(methods => methods.map(m => m.id === editingId ? { ...m, ...formData } as PaymentMethod : m));
+      setEditingId(null);
+    } else {
+      setPaymentMethods([...paymentMethods, { 
+        id: Date.now().toString(), 
+        type: formData.type as 'card' | 'bank', 
+        name: formData.name || (formData.type === 'card' ? 'New Card' : 'New Bank'),
+        last4: formData.last4.slice(-4) || '0000', 
+        expiry: formData.expiry, 
+        isDefault: paymentMethods.length === 0 
+      }]);
+      setIsAddingMethod(false);
+    }
+    setFormData({ type: 'card', name: '', last4: '', expiry: '' });
+  };
+
+  const handleDeleteMethod = (id: string) => {
+    setPaymentMethods(methods => methods.filter(m => m.id !== id));
+  };
+
+  const handleSetDefault = (id: string) => {
+    setPaymentMethods(methods => methods.map(m => ({ ...m, isDefault: m.id === id })));
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
@@ -65,21 +107,137 @@ export function PaymentsView({ user }: PaymentsViewProps) {
           <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-white">Payment Methods</h2>
-              <button className="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Add New</button>
+              {!isAddingMethod && !editingId && (
+                <button 
+                  onClick={() => { setIsAddingMethod(true); setFormData({ type: 'card', name: '', last4: '', expiry: '' }); }}
+                  className="text-sm text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
+                >
+                  <Plus size={16} /> Add New
+                </button>
+              )}
             </div>
             
-            <div className="space-y-4">
-              <div className="p-4 border border-slate-800 bg-slate-950 rounded-xl flex items-center gap-4">
-                <div className="w-12 h-8 bg-slate-800 rounded flex items-center justify-center text-slate-400">
-                  <CreditCard size={20} />
+            {(isAddingMethod || editingId) ? (
+              <div className="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <h3 className="text-sm font-medium text-white mb-2">{editingId ? 'Edit Payment Method' : 'Add Payment Method'}</h3>
+                <div className="flex gap-2 mb-2">
+                  <button 
+                    onClick={() => setFormData({...formData, type: 'card'})}
+                    className={`flex-1 py-2 text-xs font-medium rounded-lg border ${formData.type === 'card' ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' : 'bg-slate-900 border-slate-800 text-slate-400'}`}
+                  >
+                    Credit Card
+                  </button>
+                  <button 
+                    onClick={() => setFormData({...formData, type: 'bank'})}
+                    className={`flex-1 py-2 text-xs font-medium rounded-lg border ${formData.type === 'bank' ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' : 'bg-slate-900 border-slate-800 text-slate-400'}`}
+                  >
+                    Bank Account
+                  </button>
                 </div>
-                <div className="flex-1">
-                  <div className="font-medium text-white text-sm">•••• 4242</div>
-                  <div className="text-xs text-slate-500">Expires 12/24</div>
+                <div>
+                  <label className="block text-xs text-slate-500 mb-1">Name / Institution</label>
+                  <input 
+                    type="text" 
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    placeholder={formData.type === 'card' ? "e.g. Chase Visa" : "e.g. Bank of America"} 
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 outline-none"
+                  />
                 </div>
-                <div className="text-xs font-medium px-2 py-1 bg-slate-800 text-slate-300 rounded">Default</div>
+                <div className="flex gap-3">
+                  <div className="flex-[2]">
+                    <label className="block text-xs text-slate-500 mb-1">{formData.type === 'card' ? 'Card Number' : 'Account Number'}</label>
+                    <input 
+                      type="text" 
+                      value={formData.last4}
+                      onChange={e => setFormData({...formData, last4: e.target.value})}
+                      placeholder={formData.type === 'card' ? "**** **** **** 4242" : "**** 1234"} 
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                  {formData.type === 'card' && (
+                    <div className="flex-1">
+                      <label className="block text-xs text-slate-500 mb-1">Expiry</label>
+                      <input 
+                        type="text" 
+                        value={formData.expiry}
+                        onChange={e => setFormData({...formData, expiry: e.target.value})}
+                        placeholder="MM/YY" 
+                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 outline-none"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <button 
+                    onClick={() => { setIsAddingMethod(false); setEditingId(null); }}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleSaveMethod}
+                    className="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="space-y-3">
+                {paymentMethods.length === 0 ? (
+                  <div className="text-center py-6 text-slate-500 text-sm">No payment methods added.</div>
+                ) : (
+                  paymentMethods.map(method => (
+                    <div key={method.id} className="p-4 border border-slate-800 bg-slate-950 rounded-xl flex items-center gap-4 group hover:border-slate-700 transition-colors">
+                      <div className="w-12 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 shrink-0">
+                        {method.type === 'card' ? <CreditCard size={20} /> : <Building size={20} />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-white text-sm truncate">{method.name}</div>
+                        <div className="text-xs text-slate-500 flex items-center gap-2">
+                          <span>•••• {method.last4.slice(-4)}</span>
+                          {method.expiry && <span>• Expires {method.expiry}</span>}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {!method.isDefault && (
+                          <button 
+                            onClick={() => handleSetDefault(method.id)}
+                            className="p-1.5 text-slate-400 hover:text-emerald-400 bg-slate-900 rounded-md transition-colors"
+                            title="Set as default"
+                          >
+                            <Check size={14} />
+                          </button>
+                        )}
+                        <button 
+                          onClick={() => {
+                            setFormData({ type: method.type, name: method.name, last4: method.last4, expiry: method.expiry || '' });
+                            setEditingId(method.id);
+                          }}
+                          className="p-1.5 text-slate-400 hover:text-indigo-400 bg-slate-900 rounded-md transition-colors"
+                          title="Edit"
+                        >
+                          <Edit2 size={14} />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteMethod(method.id)}
+                          className="p-1.5 text-slate-400 hover:text-rose-400 bg-slate-900 rounded-md transition-colors"
+                          title="Remove"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                      {method.isDefault && (
+                        <div className="text-[10px] font-bold px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded uppercase tracking-wider shrink-0">
+                          Default
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
 
           {/* Quick Transfer */}
