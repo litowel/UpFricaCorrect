@@ -21,11 +21,10 @@ export function DashboardView({ user }: DashboardViewProps) {
             <span className="font-medium">Total Wallet Balance</span>
           </div>
           <div className="text-4xl font-bold text-slate-100 tracking-tight">
-            ${user?.walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            ${(user?.walletBalance || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </div>
-          <div className="mt-4 flex items-center gap-2 text-sm text-emerald-600 font-medium">
-            <ArrowUpRight size={16} />
-            <span>+2.4% from last week</span>
+          <div className="mt-4 flex items-center gap-2 text-sm text-slate-500 font-medium">
+            <span>No recent activity</span>
           </div>
         </div>
 
@@ -35,7 +34,7 @@ export function DashboardView({ user }: DashboardViewProps) {
             <span className="font-medium">USDC Balance</span>
           </div>
           <div className="text-4xl font-bold text-slate-100 tracking-tight">
-            {user?.usdcBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            ${(user?.usdcBalance || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </div>
           <div className="mt-4 flex items-center gap-2 text-sm text-slate-500 font-medium">
             <span>Stablecoin Reserve</span>
@@ -53,7 +52,7 @@ export function DashboardView({ user }: DashboardViewProps) {
               user?.kycStatus === 'pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
               'bg-slate-800 text-slate-400 border border-slate-700'
             }`}>
-              {user?.kycStatus}
+              {user?.kycStatus || 'unverified'}
             </div>
           </div>
           <div className="mt-4 text-sm text-slate-500">
@@ -68,23 +67,10 @@ export function DashboardView({ user }: DashboardViewProps) {
             <h2 className="text-lg font-bold text-slate-100">Recent Activity</h2>
             <button className="text-indigo-400 text-sm font-medium hover:text-indigo-300">View All</button>
           </div>
-          <div className="divide-y divide-slate-800">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="p-4 px-6 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${i % 2 === 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
-                    {i % 2 === 0 ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
-                  </div>
-                  <div>
-                    <p className="font-medium text-slate-200">{i % 2 === 0 ? 'Deposit from Paystack' : 'Withdrawal to Bank'}</p>
-                    <p className="text-sm text-slate-500">Today, 10:4{i} AM</p>
-                  </div>
-                </div>
-                <div className={`font-bold ${i % 2 === 0 ? 'text-emerald-400' : 'text-slate-200'}`}>
-                  {i % 2 === 0 ? '+' : '-'}${(Math.random() * 500).toFixed(2)}
-                </div>
-              </div>
-            ))}
+          <div className="p-8 flex flex-col items-center justify-center text-center">
+            <Activity size={48} className="text-slate-700 mb-4" />
+            <p className="text-slate-400 font-medium">No recent activity</p>
+            <p className="text-sm text-slate-500 mt-1">Your transactions will appear here.</p>
           </div>
         </div>
 

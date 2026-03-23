@@ -7,7 +7,7 @@ export function useAppStore() {
     const path = window.location.pathname.substring(1);
     if (path === '') return 'home';
     if (path.startsWith('product-')) return path as ViewState;
-    if (['auth', 'dashboard', 'flowpay', 'creatorx', 'copytrade', 'markets', 'forge', 'kyc', 'lendx', 'payments', 'settings', 'products', 'verify-2fa'].includes(path)) {
+    if (['auth', 'dashboard', 'flowpay', 'creatorx', 'copytrade', 'markets', 'forge', 'kyc', 'lendx', 'payments', 'settings', 'products', 'verify-2fa', 'payment'].includes(path)) {
       return path as ViewState;
     }
     return 'home';
@@ -21,7 +21,7 @@ export function useAppStore() {
       const path = window.location.pathname.substring(1);
       if (path === '') setCurrentView('home');
       else if (path.startsWith('product-')) setCurrentView(path as ViewState);
-      else if (['auth', 'dashboard', 'flowpay', 'creatorx', 'copytrade', 'markets', 'forge', 'kyc', 'lendx', 'payments', 'settings', 'products', 'verify-2fa'].includes(path)) {
+      else if (['auth', 'dashboard', 'flowpay', 'creatorx', 'copytrade', 'markets', 'forge', 'kyc', 'lendx', 'payments', 'settings', 'products', 'verify-2fa', 'payment'].includes(path)) {
         setCurrentView(path as ViewState);
       } else {
         setCurrentView('home');

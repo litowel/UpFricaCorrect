@@ -126,51 +126,39 @@ export function LendXView({ user }: LendXViewProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
                 <div className="text-slate-400 text-sm font-medium mb-2">Total Deposits</div>
-                <div className="text-3xl font-bold text-white">$12,450.00</div>
-                <div className="text-emerald-400 text-sm mt-2 flex items-center gap-1"><TrendingUp size={14}/> +2.4% APY</div>
+                <div className="text-3xl font-bold text-white">$0.00</div>
+                <div className="text-slate-500 text-sm mt-2 flex items-center gap-1">No active deposits</div>
               </div>
               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
                 <div className="text-slate-400 text-sm font-medium mb-2">Total Borrowed</div>
-                <div className="text-3xl font-bold text-white">$4,200.00</div>
-                <div className="text-rose-400 text-sm mt-2 flex items-center gap-1"><Activity size={14}/> 3.2% APR</div>
+                <div className="text-3xl font-bold text-white">$0.00</div>
+                <div className="text-slate-500 text-sm mt-2 flex items-center gap-1">No active loans</div>
               </div>
               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
                 <div className="text-slate-400 text-sm font-medium mb-2">Health Factor</div>
-                <div className="text-3xl font-bold text-emerald-400">2.45</div>
+                <div className="text-3xl font-bold text-slate-500">---</div>
                 <div className="text-slate-500 text-sm mt-2">Liquidation at &lt; 1.0</div>
               </div>
               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
                 <div className="text-slate-400 text-sm font-medium mb-2">Liquidation Risk</div>
-                <div className="text-3xl font-bold text-emerald-400">Low</div>
-                <div className="text-slate-500 text-sm mt-2">Safe borrow limit: $6,225</div>
+                <div className="text-3xl font-bold text-slate-500">---</div>
+                <div className="text-slate-500 text-sm mt-2">Safe borrow limit: $0.00</div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800 p-6">
                 <h3 className="text-lg font-bold text-white mb-6">Portfolio Overview</h3>
-                <div className="h-64 flex items-center justify-center border border-slate-800 border-dashed rounded-xl bg-slate-950/50">
-                  <span className="text-slate-500">Chart Visualization (Deposits vs Borrows over time)</span>
+                <div className="h-64 flex flex-col items-center justify-center border border-slate-800 border-dashed rounded-xl bg-slate-950/50">
+                  <Activity size={48} className="text-slate-700 mb-4" />
+                  <span className="text-slate-500">No portfolio data available</span>
                 </div>
               </div>
               
               <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6">
                 <h3 className="text-lg font-bold text-white mb-6">Active Positions</h3>
-                <div className="space-y-4">
-                  <div className="p-4 bg-slate-950 rounded-xl border border-slate-800">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white font-medium">Deposited ETH</span>
-                      <span className="text-emerald-400">4.5 ETH</span>
-                    </div>
-                    <div className="text-sm text-slate-500">Aave V3 Market • $12,450</div>
-                  </div>
-                  <div className="p-4 bg-slate-950 rounded-xl border border-slate-800">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white font-medium">Borrowed USDC</span>
-                      <span className="text-rose-400">4,200 USDC</span>
-                    </div>
-                    <div className="text-sm text-slate-500">Compound V3 Market • $4,200</div>
-                  </div>
+                <div className="space-y-4 flex flex-col items-center justify-center h-48 text-center">
+                  <span className="text-slate-500">You have no active positions.</span>
                 </div>
               </div>
             </div>

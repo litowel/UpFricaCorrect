@@ -8,6 +8,7 @@ import { useAppStore } from './store';
 import { Layout } from './components/Layout';
 import { HomeView } from './views/HomeView';
 import { AuthView } from './views/AuthView';
+import { PaymentView } from './views/PaymentView';
 import { DashboardView } from './views/DashboardView';
 import { FlowPayView } from './views/FlowPayView';
 import { CreatorXView } from './views/CreatorXView';
@@ -53,6 +54,22 @@ export default function App() {
 
   if (currentView === 'verify-2fa' && !is2FAVerified) {
     return <Verify2FAView user={user} onVerify={verify2FA} onBack={logout} />;
+  }
+
+  // If user is logged in but hasn't paid, force them to the payment view
+  if (!user.hasActiveSubscription) {
+    return (
+      <PaymentView 
+        user={user} 
+        onSuccess={() => {
+          const updatedUser = { ...user, hasActiveSubscription: true };
+          setUser(updatedUser);
+          localStorage.setItem('upfrica_session', JSON.stringify(updatedUser));
+          navigate('dashboard');
+        }} 
+        onLogout={logout} 
+      />
+    );
   }
 
   if (currentView.startsWith('product-')) {
