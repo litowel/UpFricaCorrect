@@ -2,8 +2,10 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import crypto from 'crypto';
 import path from 'path';
+import fs from 'fs';
 
 const SECRET = process.env.JWT_SECRET || 'upfrica-super-secret-key-2026';
+const USERS_FILE = path.join(process.cwd(), 'users.json');
 
 // Simple JWT implementation using Node's crypto module
 function createJWT(payload: any) {
@@ -17,8 +19,21 @@ function createJWT(payload: any) {
   return `${encodedHeader}.${encodedPayload}.${signature}`;
 }
 
-// In-memory user store for demonstration
-const users: any[] = [];
+// Persistent user store
+let users: any[] = [];
+if (fs.existsSync(USERS_FILE)) {
+  try {
+    users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8'));
+  } catch (e) {
+    console.error('Failed to parse users.json', e);
+    users = [];
+  }
+}
+
+function saveUsers() {
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+}
+
 const verificationCodes = new Map<string, { code: string; mode: string; selectedProduct?: string }>();
 
 async function startServer() {
@@ -57,14 +72,7 @@ async function startServer() {
       const botToken = process.env.TELEGRAM_BOT_TOKEN;
       
       if (!botToken) {
-        console.warn('TELEGRAM_BOT_TOKEN is missing. Simulating message delivery.');
-        console.log(`[SIMULATED TELEGRAM TO ${telegramId}]: ${message}`);
-        return res.json({ 
-          success: true, 
-          message: 'Code sent successfully (simulated)', 
-          productName,
-          simulatedCode: code 
-        });
+        throw new Error('TELEGRAM_BOT_TOKEN is not configured in the environment variables.');
       }
       
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -81,27 +89,13 @@ async function startServer() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Telegram API Error:', errorData);
-        
-        // Fallback to simulation so the user is never blocked
-        console.warn('Telegram delivery failed. Falling back to simulation.');
-        return res.json({ 
-          success: true, 
-          message: `Telegram delivery failed (${errorData.description || 'Unknown error'}). Using simulated code.`, 
-          productName,
-          simulatedCode: code 
-        });
+        throw new Error(`Telegram delivery failed: ${errorData.description || 'Unknown error'}`);
       }
       
       res.json({ success: true, message: 'Code sent successfully', productName });
     } catch (error: any) {
       console.error('Failed to send message:', error);
-      // Fallback to simulation on network errors too
-      return res.json({ 
-        success: true, 
-        message: `Network error. Using simulated code.`, 
-        productName,
-        simulatedCode: code 
-      });
+      return res.status(500).json({ error: error.message || 'Failed to send verification code' });
     }
   });
 
@@ -128,6 +122,7 @@ async function startServer() {
         hasActiveSubscription: false // New users must pay
       };
       users.push(user);
+      saveUsers();
     } else {
       user = users.find(u => u.telegramId === telegramId);
     }
@@ -144,13 +139,7 @@ async function startServer() {
       const payazaApiKey = process.env.PAYAZA_API_KEY;
       
       if (!payazaApiKey) {
-        console.warn('PAYAZA_API_KEY is missing. Simulating successful payment.');
-        // Simulate a successful payment response for preview purposes
-        return res.json({ 
-          success: true, 
-          simulated: true,
-          message: 'Payment simulated successfully' 
-        });
+        throw new Error('PAYAZA_API_KEY is not configured in the environment variables.');
       }
 
       // Real Payaza API Integration
@@ -176,7 +165,7 @@ async function startServer() {
             customer_last_name: "User",
             customer_email: `${userId}@upfrica.com`,
             customer_phone: "0000000000",
-            checkout_url: `${req.protocol}://${req.get('host')}/dashboard`
+            checkout_url: `${req.protocol}://${req.get('host')}/payment?status=success&userId=${userId}`
           }
         })
       });
@@ -193,12 +182,23 @@ async function startServer() {
       if (checkoutUrl) {
         res.json({ success: true, checkoutUrl });
       } else {
-        // Fallback if API structure differs slightly
-        res.json({ success: true, simulated: true, message: 'Payment initialized' });
+        throw new Error('Payment initialized but no checkout URL was returned by Payaza');
       }
     } catch (error: any) {
       console.error('Payaza Error:', error);
       res.status(400).json({ error: error.message || 'Payment processing failed' });
+    }
+  });
+
+  app.post('/api/payment/success', (req, res) => {
+    const { userId } = req.body;
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      user.hasActiveSubscription = true;
+      saveUsers();
+      res.json({ success: true, user });
+    } else {
+      res.status(404).json({ error: 'User not found' });
     }
   });
 

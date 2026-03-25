@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, ViewState } from '../types';
 import { motion } from 'motion/react';
 import { ShieldCheck, CreditCard, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -13,6 +13,36 @@ export function PaymentView({ user, onSuccess, onLogout }: PaymentViewProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'success' && urlParams.get('userId') === user.id) {
+      setIsLoading(true);
+      fetch('/api/payment/success', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('upfrica_token')}`
+        },
+        body: JSON.stringify({ userId: user.id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Clean up URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+          onSuccess();
+        } else {
+          setError('Failed to verify payment. Please contact support.');
+          setIsLoading(false);
+        }
+      })
+      .catch(err => {
+        setError('Failed to verify payment. Please contact support.');
+        setIsLoading(false);
+      });
+    }
+  }, [user.id, onSuccess]);
+
   const handlePayment = async () => {
     setIsLoading(true);
     setError('');
@@ -22,7 +52,7 @@ export function PaymentView({ user, onSuccess, onLogout }: PaymentViewProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('upfrica_token')}`
         },
         body: JSON.stringify({
           userId: user.id,
@@ -40,11 +70,6 @@ export function PaymentView({ user, onSuccess, onLogout }: PaymentViewProps) {
       // If Payaza returns a checkout URL, we would redirect:
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
-      } else if (data.simulated) {
-        // For preview simulation
-        setTimeout(() => {
-          onSuccess();
-        }, 1500);
       } else {
         onSuccess();
       }

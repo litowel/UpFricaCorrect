@@ -10,6 +10,7 @@ interface AuthViewProps {
 
 export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
   const [mode, setMode] = useState<'login' | 'signup' | 'verify'>('signup');
+  const [previousMode, setPreviousMode] = useState<'login' | 'signup'>('signup');
   const [telegramId, setTelegramId] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<ViewState | ''>('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -69,13 +70,9 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
         throw new Error(data.error || 'Failed to request code');
       }
 
-      if (data.simulatedCode) {
-        setSuccessMessage(`Simulated code: ${data.simulatedCode}`);
-        setVerificationCode(data.simulatedCode);
-      } else {
-        setSuccessMessage(`Code sent to your Telegram!`);
-      }
+      setSuccessMessage(`Code sent to your Telegram!`);
       
+      setPreviousMode(mode as 'login' | 'signup');
       setMode('verify');
     } catch (err: any) {
       setError(err.message);
@@ -186,10 +183,10 @@ export function AuthView({ onLogin, onNavigate }: AuthViewProps) {
                 
                 <button
                   type="button"
-                  onClick={() => setMode('signup')}
+                  onClick={() => setMode(previousMode)}
                   className="w-full text-slate-500 hover:text-slate-300 text-sm font-medium transition-colors"
                 >
-                  Change Telegram ID
+                  Go Back
                 </button>
               </form>
             ) : (
